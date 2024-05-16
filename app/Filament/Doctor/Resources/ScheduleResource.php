@@ -2,14 +2,15 @@
 
 namespace App\Filament\Doctor\Resources;
 
-use App\Filament\Doctor\Resources\ScheduleResource\Pages;
-use App\Models\Schedule;
-use App\Models\Slot;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\Slot;
 use Filament\Tables;
+use App\Models\Schedule;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Enums\DaysOfTheWeek;
+use Filament\Resources\Resource;
+use App\Filament\Doctor\Resources\ScheduleResource\Pages;
 
 class ScheduleResource extends Resource
 {
@@ -22,24 +23,24 @@ class ScheduleResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-            Forms\Components\Section::make([
-                Forms\Components\DatePicker::make('date')
-                    ->native(false)
-                    ->closeOnDateSelection()
-                    ->required(),
-                Forms\Components\Repeater::make('slots')
-                    ->relationship()
-                    ->schema([
-                        Forms\Components\TimePicker::make('start')
-                            ->seconds(false)
-                            ->required(),
-                        Forms\Components\TimePicker::make('end')
-                            ->seconds(false)
-                            ->required()
-                    ])
-            ])
-        ]);
+            ->schema([
+                Forms\Components\Section::make([
+                    Forms\Components\Select::make('day_of_week')
+                        ->options(DaysOfTheWeek::class)
+                        ->native(false)
+                        ->required(),
+                    Forms\Components\Repeater::make('slots')
+                        ->relationship()
+                        ->schema([
+                            Forms\Components\TimePicker::make('start')
+                                ->seconds(false)
+                                ->required(),
+                            Forms\Components\TimePicker::make('end')
+                                ->seconds(false)
+                                ->required()
+                        ])
+                ])
+            ]);
     }
 
     public static function table(Table $table): Table
