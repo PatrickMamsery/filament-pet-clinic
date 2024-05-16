@@ -13,7 +13,11 @@ class PetPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return match ($user->role->name) {
+            'admin' => false,
+            'doctor' => true,
+            'owner' => true,
+        };
     }
 
     /**
@@ -22,7 +26,8 @@ class PetPolicy
     public function view(User $user, Pet $pet): bool
     {
         return match ($user->role->name) {
-            'admin', 'doctor' => true,
+            'admin' => false,
+            'doctor' => true,
             'owner' => $user->id == $pet->owner_id
         };
     }
