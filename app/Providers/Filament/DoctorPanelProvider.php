@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Doctor\Pages\Register;
 use App\Filament\Pages\Auth\EditProfile;
 use App\Http\Middleware\ApplyTenantScopes;
 use App\Http\Middleware\AssignGlobalScopes;
@@ -30,6 +31,7 @@ class DoctorPanelProvider extends PanelProvider
             ->id('doctor')
             ->path('doctor')
             ->login()
+            ->registration(Register::class)
             ->profile(EditProfile::class)
             ->passwordReset()
             ->colors([

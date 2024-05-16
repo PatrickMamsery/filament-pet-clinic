@@ -27,8 +27,8 @@ class ClinicResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('address')
                     ->required(),
-                Forms\Components\TextInput::make('zip')
-                    ->required(),
+                // Forms\Components\TextInput::make('zip')
+                //     ->required(),
                 Forms\Components\TextInput::make('phone')
                     ->tel()
                     ->required(),
@@ -43,8 +43,8 @@ class ClinicResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('address')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('zip')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('zip')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
