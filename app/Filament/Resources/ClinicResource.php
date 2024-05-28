@@ -2,13 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ClinicResource\Pages;
-use App\Models\Clinic;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Clinic;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\ClinicResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ClinicResource extends Resource
 {
@@ -93,5 +95,11 @@ class ClinicResource extends Resource
             'create' => Pages\CreateClinic::route('/create'),
             'edit' => Pages\EditClinic::route('/{record}/edit'),
         ];
+    }
+
+    /** @return Builder<Order> */
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->withoutGlobalScope(SoftDeletingScope::class);
     }
 }

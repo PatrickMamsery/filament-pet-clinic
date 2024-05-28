@@ -31,7 +31,7 @@ class PetResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required(),
                 Forms\Components\DatePicker::make('date_of_birth')
-                   ->required(),
+                    ->required(),
                 Forms\Components\Select::make('type')
                     ->options(PetType::class)
                     ->required()
@@ -62,14 +62,14 @@ class PetResource extends Resource
                 ]),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -77,5 +77,5 @@ class PetResource extends Resource
             'create' => Pages\CreatePet::route('/create'),
             'edit' => Pages\EditPet::route('/{record}/edit'),
         ];
-    }    
+    }
 }

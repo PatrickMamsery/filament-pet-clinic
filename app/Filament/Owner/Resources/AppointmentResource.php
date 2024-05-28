@@ -5,8 +5,10 @@ namespace App\Filament\Owner\Resources;
 use Carbon\Carbon;
 use Filament\Forms;
 use App\Models\Role;
+use App\Models\Slot;
 use App\Models\User;
 use Filament\Tables;
+use App\Enums\PetType;
 use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -17,8 +19,8 @@ use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\Actions\Action;
 use App\Filament\Owner\Resources\AppointmentResource\Pages;
-use App\Models\Slot;
 
 class AppointmentResource extends Resource
 {
@@ -34,7 +36,23 @@ class AppointmentResource extends Resource
             ->schema([
                 Forms\Components\Select::make('pet_id')
                     ->relationship('pet', 'name')
-                    ->required(),
+                    ->required()
+                    ->createOptionForm([
+                        Forms\Components\FileUpload::make('avatar')
+                            ->image()
+                            ->imageEditor(),
+                        Forms\Components\TextInput::make('name')
+                            ->required(),
+                        Forms\Components\DatePicker::make('date_of_birth')
+                            ->required(),
+                        Forms\Components\Select::make('type')
+                            ->options(PetType::class)
+                            ->required()
+                    ])->createOptionAction(function (Action $action) {
+                        return $action
+                            ->modalHeading('Create Pet')
+                            ->modalSubmitActionLabel('Create Pet');
+                    }),
                 Forms\Components\Select::make('clinic_id')
                     ->relationship('clinic', 'name')
                     ->required(),
