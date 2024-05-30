@@ -58,6 +58,7 @@ class AppointmentResource extends Resource
                     ->required(),
                 Forms\Components\DatePicker::make('date')
                     ->live()
+                    ->disabled(fn (Get $get) => blank($get('clinic_id')))
                     ->required(),
                 Forms\Components\Select::make('doctor_id')
                     ->required()
@@ -91,9 +92,32 @@ class AppointmentResource extends Resource
                     }),
                 Forms\Components\Select::make('slot_id')
                     ->label('Slot')
-                    ->options(fn (Forms\Get $get): Collection => Slot::query()
-                        ->where('schedule_id', $get('schedule_id'))
-                        ->pluck('start', 'end', 'id'))
+                    ->options(function (Forms\Get $get): array {
+                        $doctorId = $get('doctor_id');
+                        $date = $get('date');
+
+                        if (blank($doctorId) || blank($date)) {
+                            return [];
+                        }
+
+                        $dayOfTheWeek = Carbon::parse($date)->dayOfWeek;
+
+                        $slots = Slot::query()
+                            ->whereHas('schedule', function (Builder $query) use ($doctorId, $dayOfTheWeek, $get) {
+                                $query->where('clinic_id', $get('clinic_id'))
+                                    ->where('day_of_week', $dayOfTheWeek)
+                                    ->where('owner_id', $doctorId);
+                            })
+                            ->whereDoesntHave('appointment', function (Builder $query) use ($date) {
+                                $query->where('date', $date);
+                            })
+                            ->get();
+
+                        return $slots->mapWithKeys(function ($slot) {
+                            return [$slot->id => $slot->formattedTime];
+                        })->toArray();
+                    })
+                    ->hidden(fn (Get $get) => blank($get('doctor_id')))
                     ->preload()
                     ->live()
                     ->searchable()

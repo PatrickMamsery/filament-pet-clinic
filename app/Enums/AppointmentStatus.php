@@ -9,6 +9,7 @@ enum AppointmentStatus: string implements HasLabel, HasColor
 {
     case Created = 'created';
     case Confirmed = 'confirmed';
+    case Rejected = 'rejected';
     case Canceled = 'canceled';
 
     public function getLabel(): ?string
@@ -21,6 +22,7 @@ enum AppointmentStatus: string implements HasLabel, HasColor
         return match ($this) {
             self::Created => 'warning',
             self::Confirmed => 'success',
+            self::Rejected => 'danger',
             self::Canceled => 'danger',
         };
     }
