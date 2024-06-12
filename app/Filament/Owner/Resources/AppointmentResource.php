@@ -47,7 +47,9 @@ class AppointmentResource extends Resource
                             ->required(),
                         Forms\Components\Select::make('type')
                             ->options(PetType::class)
-                            ->required()
+                            ->required(),
+                        Forms\Components\Hidden::make('owner_id')
+                            ->default(auth()->user()->id),
                     ])->createOptionAction(function (Action $action) {
                         return $action
                             ->modalHeading('Create Pet')
@@ -58,7 +60,7 @@ class AppointmentResource extends Resource
                     ->required(),
                 Forms\Components\DatePicker::make('date')
                     ->live()
-                    ->disabled(fn (Get $get) => blank($get('clinic_id')))
+                    // ->disabled(fn (Get $get) => !($get('clinic_id')))
                     ->required(),
                 Forms\Components\Select::make('doctor_id')
                     ->required()

@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ClinicResource\Pages;
+use App\Filament\Resources\ClinicResource\RelationManagers\ServicesRelationManager;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ClinicResource extends Resource
@@ -84,7 +85,7 @@ class ClinicResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ServicesRelationManager::class,
         ];
     }
 

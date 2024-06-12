@@ -34,7 +34,9 @@ class PetResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('type')
                     ->options(PetType::class)
-                    ->required()
+                    ->required(),
+                Forms\Components\Hidden::make('owner_id')
+                    ->default(auth()->user()->id),
             ]);
     }
 
