@@ -2,9 +2,10 @@
 
 namespace App\Providers\Filament;
 
-// use App\Filament\Doctor\Pages\Register;
-// use App\Filament\Doctor\Pages\Tenancy\RegisterClinic;
+use App\Filament\Doctor\Pages\Register;
+use App\Filament\Pages\Tenancy\RegisterClinic;
 use App\Filament\Pages\Auth\EditProfile;
+use App\Filament\Pages\Tenancy\EditClinicProfile;
 use App\Http\Middleware\ApplyTenantScopes;
 use App\Http\Middleware\AssignGlobalScopes;
 use App\Models\Clinic;
@@ -32,7 +33,7 @@ class DoctorPanelProvider extends PanelProvider
             ->id('doctor')
             ->path('doctor')
             ->login()
-            // ->registration(Register::class)
+            ->registration(Register::class)
             // ->registration()
             ->profile(EditProfile::class)
             ->passwordReset()
@@ -65,7 +66,8 @@ class DoctorPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
-            // ->tenantRegistration(RegisterClinic::class)
+            ])
+            ->tenantRegistration(RegisterClinic::class)
+            ->tenantProfile(EditClinicProfile::class);
     }
 }

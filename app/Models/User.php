@@ -36,6 +36,7 @@ class User extends Authenticatable implements HasTenants, FilamentUser, HasAvata
         'email',
         'password',
         'phone',
+        'role_id',
     ];
 
     /**

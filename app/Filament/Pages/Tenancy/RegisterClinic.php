@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Doctor\Pages\Tenancy;
+namespace App\Filament\Pages\Tenancy;
 
 use App\Models\Clinic;
 use Filament\Forms;
