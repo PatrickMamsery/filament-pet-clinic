@@ -24,29 +24,22 @@ class ListSchedules extends ListRecords
 
     public function getTabs(): array
     {
-        return [
-            'Sunday' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('day_of_week', DaysOfTheWeek::Sunday))
-                ->badge(Schedule::query()->where('day_of_week', DaysOfTheWeek::Sunday)->count() ?: null),
-            'Monday' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('day_of_week', DaysOfTheWeek::Monday))
-                ->badge(Schedule::query()->where('day_of_week', DaysOfTheWeek::Monday)->count() ?: null),
-            'Tuesday' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('day_of_week', DaysOfTheWeek::Tuesday))
-                ->badge(Schedule::query()->where('day_of_week', DaysOfTheWeek::Tuesday)->count() ?: null),
-            'Wednesday' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('day_of_week', DaysOfTheWeek::Wednesday))
-                ->badge(Schedule::query()->where('day_of_week', DaysOfTheWeek::Wednesday)->count() ?: null),
-            'Thursday' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('day_of_week', DaysOfTheWeek::Thursday))
-                ->badge(Schedule::query()->where('day_of_week', DaysOfTheWeek::Thursday)->count() ?: null),
-            'Friday' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('day_of_week', DaysOfTheWeek::Friday))
-                ->badge(Schedule::query()->where('day_of_week', DaysOfTheWeek::Friday)->count() ?: null),
-            'Saturday' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('day_of_week', DaysOfTheWeek::Saturday))
-                ->badge(Schedule::query()->where('day_of_week', DaysOfTheWeek::Saturday)->count() ?: null),
-        ];
+        return collect(DaysOfTheWeek::cases())->mapWithKeys(function ($day) {
+            $dayName = $day->name;
+            return [
+                $dayName => Tab::make()
+                    ->modifyQueryUsing(fn (Builder $query) => $query->where('owner_id', auth()->user()->id)->where('day_of_week', $day))
+                    ->badge($this->getBadgeCount($day)),
+            ];
+        })->toArray();
+    }
+
+    protected function getBadgeCount(string $day): ?int
+    {
+        return Schedule::query()
+            ->where('day_of_week', $day)
+            ->where('owner_id', auth()->user()->id)
+            ->count() ?: null;
     }
 
     public function getDefaultActiveTab(): string | int | null

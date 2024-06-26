@@ -12,6 +12,16 @@ class ClinicPolicy
         //
     }
 
+    public function viewAny()
+    {
+        return true;
+    }
+
+    public function view()
+    {
+        return true;
+    }
+
     public function create()
     {
         return auth()->user()->role->name == 'admin';

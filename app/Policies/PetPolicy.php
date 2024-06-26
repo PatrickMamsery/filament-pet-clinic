@@ -37,7 +37,10 @@ class PetPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return match ($user->role->name) {
+            'admin', 'doctor' => false,
+            'owner' => true
+        };
     }
 
     /**
@@ -46,7 +49,8 @@ class PetPolicy
     public function update(User $user, Pet $pet): bool
     {
         return match ($user->role->name) {
-            'admin', 'doctor' => true,
+            'admin' => true,
+            'doctor' => false,
             'owner' => $user->id == $pet->owner_id
         };
     }
