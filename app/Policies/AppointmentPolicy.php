@@ -31,7 +31,7 @@ class AppointmentPolicy
     {
         return match ($user->role->name) {
             'admin' => false,
-            'doctor' => true,
+            'doctor' => false,
             'owner' => true,
         };
     }
