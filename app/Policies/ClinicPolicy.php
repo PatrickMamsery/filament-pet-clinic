@@ -2,6 +2,8 @@
 
 namespace App\Policies;
 
+use App\Models\User;
+
 class ClinicPolicy
 {
     /**
@@ -22,9 +24,13 @@ class ClinicPolicy
         return true;
     }
 
-    public function create()
+    public function create(User $user)
     {
-        return auth()->user()->role->name == 'admin';
+        return match ($user->role->name) {
+            'admin' => false,
+            'doctor' => true,
+            'owner' => false,
+        };
     }
 
     public function update()

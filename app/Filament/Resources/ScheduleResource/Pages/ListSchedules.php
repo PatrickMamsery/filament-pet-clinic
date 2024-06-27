@@ -29,7 +29,7 @@ class ListSchedules extends ListRecords
             return [
                 $dayName => Tab::make()
                     ->modifyQueryUsing(fn (Builder $query) => $query->where('owner_id', auth()->user()->id)->where('day_of_week', $day))
-                    ->badge($this->getBadgeCount($day)),
+                    ->badge($this->getBadgeCount($day->value)),
             ];
         })->toArray();
     }

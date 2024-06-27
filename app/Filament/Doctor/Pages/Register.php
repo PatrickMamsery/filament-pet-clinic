@@ -105,7 +105,7 @@ class Register extends BaseRegisterPage
 
         app()->bind(
             \Illuminate\Auth\Listeners\SendEmailVerificationNotification::class,
-            \Filament\Listeners\Auth\SendEmailVerificationNotification::class,
+            // \Filament\Listeners\Auth\SendEmailVerificationNotification::class,
         );
 
         event(new Registered($user));
