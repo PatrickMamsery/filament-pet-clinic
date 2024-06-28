@@ -21,6 +21,7 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Actions\Action;
 use App\Filament\Owner\Resources\AppointmentResource\Pages;
+use App\Filament\Owner\Resources\AppointmentResource\RelationManagers\NotesRelationManager;
 
 class AppointmentResource extends Resource
 {
@@ -178,7 +179,7 @@ class AppointmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            NotesRelationManager::class
         ];
     }
 
