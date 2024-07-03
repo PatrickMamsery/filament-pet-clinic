@@ -30,7 +30,17 @@ class RegisterClinic extends RegisterTenant
 
     protected function handleRegistration(array $data): Clinic
     {
-        $clinic = Clinic::create($data);
+        // Before creating the clinic we need to check whether the clinic already exists
+        $clinic = Clinic::where('name', $data['name'])
+                        ->where('address', $data['address'])
+                        ->where('phone', $data['phone'])
+                        ->first();
+
+        if ($clinic) {
+            return $clinic;
+        } else {
+            $clinic = Clinic::create($data);
+        }
 
         $clinic->users()->attach(auth()->user());
 
